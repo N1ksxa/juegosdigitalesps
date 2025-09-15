@@ -15,7 +15,26 @@ body {
   overflow-x: hidden;
 }
 .header-line { width: 100%; height: 8px; background-color: #00bcd4; }
-h1 { text-align: center; margin: 20px 0 5px 0; font-size: 32px; font-weight: bold; }
+h1 {
+  text-align: center;
+  margin: 20px 0 5px 0;
+  font-size: 40px;
+  font-weight: bold;
+  background: linear-gradient(270deg, blue, red, violet, green, blue);
+  background-size: 800% 800%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: neonColors 8s ease infinite;
+  text-shadow: 0 0 10px rgba(255,255,255,0.8),
+               0 0 20px rgba(255,255,255,0.6),
+               0 0 30px rgba(255,255,255,0.4);
+}
+
+@keyframes neonColors {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 h2 { text-align: center; margin-bottom: 20px; font-size: 24px; color: #007c91; }
 .catalogo { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 10px; }
 .juego { 
@@ -33,6 +52,64 @@ h2 { text-align: center; margin-bottom: 20px; font-size: 24px; color: #007c91; }
 .juego p { margin: 4px 0; font-size: 14px; }
 label { display: block; margin-top: 5px; }
 #carrito { margin-top: 30px; border-top: 2px solid #00bcd4; padding-top: 20px; text-align: center; }
+/* Botón de carrito */
+#btnCarrito {
+  margin-left: 10px;
+  background: orange;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+/* Modal del carrito */
+#modalCarrito {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#modalCarrito .contenido {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: center;
+}
+
+#listaCarrito img {
+  width: 60px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.itemCarrito {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.itemCarrito button {
+  background: red;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
 #total { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
 #selected-juegos { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
 #selected-juegos img { 
@@ -61,7 +138,7 @@ button:hover { background: #007c91; }
 <body>
 
 <div class="header-line"></div>
-<h1>BIENVENIDO A JUEGOSDIGITALESPS</h1>
+<h1>BIENVENIDO A JUEGOSDIGITALES PS</h1>
 <h2>CATÁLOGO:</h2>
 
 <div class="symbols">
@@ -317,95 +394,182 @@ button:hover { background: #007c91; }
 
 
 
-<div id="carrito">
-<p id="total">Total: 0</p>
-<div id="selected-juegos"></div>
-<button onclick="mostrarMensaje()">Comprar</button>
+<!-- Apartado de total y botón Comprar -->
+<div id="carrito" style="margin-top:30px; border-top:2px solid #00bcd4; padding-top:20px; text-align:center;">
+  <p id="total">Total: 0 ARS</p>
+  <button id="btnComprar">Comprar</button>
+  <div style="position: relative; display: inline-block; margin-left: 10px;">
+    <button id="btnCarrito">🛒</button>
+    <span id="contadorCarrito" style="position: absolute; top: -10px; right: -10px; background-color: black; color: white; border-radius: 50%; padding: 4px 8px; font-size: 12px; font-weight: bold;">0</span>
+  </div>
 </div>
 
-<div id="mensaje">
-<h2>💰 INSTRUCCIONES DE PAGO 💰</h2>
-<p><b>Total a pagar:</b> <span id="totalPago">0</span> pesos</p>
-<p><b>Alias:</b> juegosdigitalesps45</p>
-<p><b>CVU:</b> 0000003100079682982223</p>
-<p><b>Destino:</b> Nicolás Emiliano Pereyra dos Santos</p>
-<p>1️⃣ Realiza el pago al alias/CVU indicado.</p>
-<p>2️⃣ Envía el comprobante de pago a nuestras redes sociales:</p>
-<ul style="list-style:none;">
-<li>WhatsApp: <b>+54 11-2379-7528</b></li>
-<li>Instagram: <b>@juegosdigitalesps._</b></li>
-</ul>
-<p>Una vez confirmado el pago, recibirás tus juegos digitales 🎮</p>
+<!-- Modal de carrito -->
+<div id="modalCarrito" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000;">
+  <div class="contenido" style="background:white; padding:20px; border-radius:10px; width:90%; max-width:500px; max-height:80vh; overflow-y:auto; text-align:center;">
+    <h3>Juegos en tu carrito</h3>
+    <div id="listaCarrito"></div>
+    <button onclick="cerrarCarrito()" style="margin-top:15px;">Cerrar</button>
+  </div>
+</div>
+
+<!-- Apartado de pago -->
+<div id="mensaje" style="display:none; flex-wrap:wrap; justify-content:center; gap:20px;">
+  <div id="cuadroJuegos" style="border:2px solid #00bcd4; border-radius:10px; padding:15px; background:#f0f8ff; flex:1; min-width:250px;">
+    <h3 style="text-align:center;">Tus juegos</h3>
+    <div id="juegosPago" style="display:flex; gap:10px; flex-wrap: wrap; justify-content:center;"></div>
+  </div>
+
+  <div id="instruccionesPago" style="border:2px solid #00bcd4; border-radius:10px; padding:15px; background:#ffffff; flex:1; min-width:250px;">
+    <p><b>Total a pagar:</b> <span id="totalPago">0</span> ARS</p>
+    <p><b>Alias:</b> juegosdigitalesps45</p>
+    <p><b>CVU:</b> 0000003100079682982223</p>
+    <p><b>Destino:</b> Nicolás Emiliano Pereyra dos Santos</p>
+    <p>1️⃣ Realiza el pago al alias/CVU indicado.</p>
+    <p>2️⃣ Envía el comprobante de pago a nuestras redes sociales:</p>
+    <ul style="list-style:none;">
+      <li>WhatsApp: <b>+54 11-2379-7528</b></li>
+      <li>Instagram: <b>@juegosdigitalesps._</b></li>
+    </ul>
+    <p>Una vez confirmado el pago, recibirás tus juegos digitales 🎮</p>
+  </div>
 </div>
 
 <script>
 const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 const totalDisplay = document.getElementById("total");
-const selectedContainer = document.getElementById("selected-juegos");
+const contadorCarrito = document.getElementById("contadorCarrito");
+const selectedJuegosDiv = document.getElementById("selected-juegos");
+const btnCarrito = document.getElementById("btnCarrito");
+const modalCarrito = document.getElementById("modalCarrito");
+const listaCarrito = document.getElementById("listaCarrito");
+const btnComprar = document.getElementById("btnComprar");
 const mensaje = document.getElementById("mensaje");
+const juegosPagoDiv = document.getElementById("juegosPago");
 const totalPago = document.getElementById("totalPago");
-let total = 0;
 
+let carrito = [];
+
+// Actualizar total, número y vista de juegos seleccionados
+function actualizarContadorYTotal() {
+  const total = carrito.reduce((sum, item) => sum + item.value, 0);
+  totalDisplay.textContent = "Total: " + total.toLocaleString() + " ARS";
+  contadorCarrito.textContent = carrito.length;
+
+  selectedJuegosDiv.innerHTML = "";
+  carrito.forEach(item => {
+    const img = document.createElement("img");
+    img.src = item.imgSrc;
+    img.alt = item.name;
+    img.style.width = "60px";
+    img.style.height = "auto";
+    img.style.margin = "3px";
+    selectedJuegosDiv.appendChild(img);
+  });
+}
+
+// Manejar selección/desmarcado
 checkboxes.forEach(checkbox => {
-checkbox.addEventListener("change", () => {
-const value = parseInt(checkbox.value);
-const name = checkbox.dataset.name;
-const imgSrc = checkbox.dataset.img;
+  checkbox.addEventListener("change", () => {
+    const name = checkbox.dataset.name;
+    const imgSrc = checkbox.dataset.img;
+    const value = parseInt(checkbox.value);
 
-if (checkbox.checked) {
-  total += value;
-  const img = document.createElement("img");
-  img.src = imgSrc;
-  img.alt = name;
-  img.id = "img-" + name.replace(/\s+/g, '');
-  selectedContainer.appendChild(img);
-} else {
-  total -= value;
-  const imgToRemove = document.getElementById("img-" + name.replace(/\s+/g, ''));
-  if (imgToRemove) selectedContainer.removeChild(imgToRemove);
-}
+    if(checkbox.checked){
+      if(!carrito.find(item => item.name === name)){
+        carrito.push({name, imgSrc, value});
+      }
+    } else {
+      carrito = carrito.filter(item => item.name !== name);
+    }
 
-totalDisplay.textContent = "Total: " + total.toLocaleString() + " ARS";
-});
+    actualizarContadorYTotal();
+  });
 });
 
-function mostrarMensaje() {
-if (total === 0) {
-  alert("Selecciona al menos un juego para comprar.");
-  return;
-}
-totalPago.textContent = total.toLocaleString();
-mensaje.style.display = "block";
-mensaje.scrollIntoView({ behavior: "smooth" });
+// Abrir modal
+btnCarrito.addEventListener("click", () => {
+  actualizarModalCarrito();
+  modalCarrito.style.display = "flex";
+});
+
+// Cerrar modal
+function cerrarCarrito(){
+  modalCarrito.style.display = "none";
 }
 
+// Actualizar contenido del modal
+function actualizarModalCarrito(){
+  listaCarrito.innerHTML = "";
+  if(carrito.length === 0){
+    listaCarrito.innerHTML = "<p>No hay juegos en el carrito.</p>";
+    return;
+  }
+  carrito.forEach(item => {
+    const div = document.createElement("div");
+    div.classList.add("itemCarrito");
+    div.style.display = "flex";
+    div.style.alignItems = "center";
+    div.style.justifyContent = "space-between";
+    div.style.margin = "10px 0";
+    div.style.borderBottom = "1px solid #ddd";
+    div.style.paddingBottom = "5px";
+
+    div.innerHTML = `
+      <div style="display:flex; align-items:center; gap:10px;">
+        <img src="${item.imgSrc}" alt="${item.name}" style="width:60px; border-radius:5px;">
+        <span>${item.name} - ${item.value.toLocaleString()} ARS</span>
+      </div>
+      <button onclick="quitarDelCarrito('${item.name}')" style="background:red; padding:5px 10px; border:none; border-radius:5px; color:white;">Quitar</button>
+    `;
+    listaCarrito.appendChild(div);
+  });
+}
+
+// Quitar del carrito desde modal
+function quitarDelCarrito(nombre){
+  carrito = carrito.filter(item => item.name !== nombre);
+  const checkbox = [...checkboxes].find(ch => ch.dataset.name === nombre);
+  if(checkbox) checkbox.checked = false;
+  actualizarContadorYTotal();
+  actualizarModalCarrito();
+}
+
+// Comprar: mostrar apartado de pago y juegos seleccionados
+btnComprar.addEventListener("click", () => {
+  if(carrito.length === 0){
+    alert("Selecciona al menos un juego para comprar.");
+    return;
+  }
+
+  const total = carrito.reduce((sum, item) => sum + item.value, 0);
+  totalPago.textContent = total.toLocaleString();
+
+  juegosPagoDiv.innerHTML = "";
+  let imgSize;
+  switch(carrito.length){
+    case 1: imgSize = 250; break;
+    case 2: imgSize = 180; break;
+    case 3: imgSize = 140; break;
+    case 4: imgSize = 120; break;
+    default: imgSize = 100;
+  }
+
+  carrito.forEach(item => {
+    const img = document.createElement("img");
+    img.src = item.imgSrc;
+    img.alt = item.name;
+    img.style.width = imgSize + "px";
+    img.style.height = "auto";
+    img.style.borderRadius = "8px";
+    juegosPagoDiv.appendChild(img);
+  });
+
+  mensaje.style.display = "flex";
+  mensaje.scrollIntoView({behavior:"smooth"});
+});
 </script>
-<script>
-// Crear múltiples símbolos de fondo
-const symbolsContainer = document.querySelector('.symbols');
-const symbols = ['△', '○', '✕', '□'];
-
-for(let i=0; i<30; i++){ // cantidad de símbolos
-  const span = document.createElement('span');
-  span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
   
-  // posición horizontal aleatoria
-  span.style.left = Math.random() * 100 + '%';
-  
-  // tamaño aleatorio entre 20px y 60px
-  const size = 20 + Math.random() * 40;
-  span.style.fontSize = size + 'px';
-  
-  // velocidad de animación aleatoria
-  const duration = 10 + Math.random() * 20;
-  span.style.animationDuration = duration + 's';
-  
-  // retraso aleatorio para que no todos comiencen igual
-  span.style.animationDelay = Math.random() * 10 + 's';
-  
-  symbolsContainer.appendChild(span);
-}
-</script>
-
 </body>
 </html>
+
