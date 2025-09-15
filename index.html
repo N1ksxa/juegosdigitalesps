@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Juegos Digitales PS</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #e0f7fa; 
+  color: #000;
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.header-line { width: 100%; height: 8px; background-color: #00bcd4; }
+h1 { text-align: center; margin: 20px 0 5px 0; font-size: 32px; font-weight: bold; }
+h2 { text-align: center; margin-bottom: 20px; font-size: 24px; color: #007c91; }
+.catalogo { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 10px; }
+.juego { 
+  width: 260px;          /* más ancho para la imagen */
+  border: 2px solid #00bcd4; 
+  border-radius: 12px; 
+  background: white; 
+  padding: 15px;         /* más espacio interno */
+  text-align: center; 
+  position: relative; 
+  transition: transform 0.3s; 
+}
+.juego:hover { transform: translateY(-5px); }
+.juego img { width: 100%; height: auto; object-fit: contain; border-radius: 8px; }
+.juego p { margin: 4px 0; font-size: 14px; }
+label { display: block; margin-top: 5px; }
+#carrito { margin-top: 30px; border-top: 2px solid #00bcd4; padding-top: 20px; text-align: center; }
+#total { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+#selected-juegos { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+#selected-juegos img { 
+  width: 180px;       /* más ancho */
+  height: auto;       /* mantiene proporción */
+  object-fit: contain; /* no recorta la imagen */
+  border-radius: 8px; 
+  margin-bottom: 10px; 
+}
+button { padding: 10px 20px; font-size: 16px; background: #00bcd4; color: white; border: none; cursor: pointer; border-radius: 5px; margin-top: 15px; }
+button:hover { background: #007c91; }
+#mensaje { margin-top: 50px; padding: 15px; border: 2px solid #00bcd4; background: white; display: none; text-align: center; }
+.symbols { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: -1; }
+.symbols span { position: absolute; font-size: 40px; color: rgba(0, 188, 212, 0.1); animation: float 15s linear infinite; }
+@keyframes float { 0% { transform: translateY(100vh) rotate(0deg); } 100% { transform: translateY(-100px) rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="header-line"></div>
+<h1>BIENVENIDO A JUEGOSDIGITALESPS</h1>
+<h2>CATÁLOGO:</h2>
+
+<div class="symbols">
+  <span style="left:10%;">△</span>
+  <span style="left:30%;">○</span>
+  <span style="left:50%;">✕</span>
+  <span style="left:70%;">□</span>
+  <span style="left:85%;">△</span>
+</div>
+
+<div class="catalogo">
+
+<!-- LISTA COMPLETA DE JUEGOS -->
+<div class="juego">
+<img src="images/red.jpg" alt="Red Dead Redemption 1 y 2">
+<p><b>Nombre:</b> Red Dead Redemption 1 y 2</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 28mil</p>
+<label><input type="checkbox" value="28000" data-name="Red Dead Redemption 1 y 2" data-img="images/red.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+<img src="images/tlor.jpg" alt="The Last of Us Remastered">
+<p><b>Nombre:</b> The Last of Us Remastered</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 20mil</p>
+<label><input type="checkbox" value="20000" data-name="The Last of Us Remastered" data-img="images/tlor.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+<img src="images/cuphe.jpg" alt="Cuphead">
+<p><b>Nombre:</b> Cuphead</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 22mil</p>
+<label><input type="checkbox" value="22000" data-name="Cuphead" data-img="images/cuphe.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+<img src="images/kakarot.jpg" alt="Dragon Ball Kakarot">
+<p><b>Nombre:</b> Dragon Ball Kakarot</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 26mil</p>
+<label><input type="checkbox" value="26000" data-name="Dragon Ball Kakarot" data-img="images/kakarot.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+<img src="images/re4r.jpg" alt="Resident Evil 4 Remake">
+<p><b>Nombre:</b> Resident Evil 4 Remake</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 32mil</p>
+<label><input type="checkbox" value="32000" data-name="Resident Evil 4 Remake" data-img="images/re4r.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+<img src="images/hollow.jpg" alt="Hollow Knight">
+<p><b>Nombre:</b> Hollow Knight</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 24mil</p>
+<label><input type="checkbox" value="24000" data-name="Hollow Knight" data-img="images/hollow.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+<img src="images/silksong.jpg" alt="Hollow Knight Silksong">
+<p><b>Nombre:</b> Hollow Knight Silksong</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 20mil</p>
+<label><input type="checkbox" value="20000" data-name="Hollow Knight Silksong" data-img="images/silksong.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+<img src="images/negromorales.jpg" alt="Spider-Man Miles Morales">
+<p><b>Nombre:</b> Spider-Man Miles Morales</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 24mil</p>
+<label><input type="checkbox" value="24000" data-name="Spider-Man Miles Morales" data-img="images/negromorales.jpg"> Seleccionar</label>
+</div>
+<div class="juego">
+<img src="images/sangre.jpg" alt="Bloodborne">
+<p><b>Nombre:</b> Bloodborne</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 23mil</p>
+  <label><input type="checkbox" value="23000" data-name="Bloodborne" data-img="images/sangre.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/villa.jpg" alt="Resident Evil Village">
+  <p><b>Nombre:</b> Resident Evil Village</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 24mil</p>
+  <label><input type="checkbox" value="24000" data-name="Resident Evil Village" data-img="images/villa.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/re2.jpg" alt="Resident Evil 2 Remake">
+  <p><b>Nombre:</b> Resident Evil 2 Remake</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 19mil</p>
+  <label><input type="checkbox" value="19000" data-name="Resident Evil 2 Remake" data-img="images/re2.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/godwar.jpg" alt="God of War III Remastered">
+  <p><b>Nombre:</b> God of War III Remastered</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 22mil</p>
+  <label><input type="checkbox" value="22000" data-name="God of War III Remastered" data-img="images/godwar.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/manky.jpg" alt="No Man's Sky">
+  <p><b>Nombre:</b> No Man's Sky</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 25mil</p>
+  <label><input type="checkbox" value="25000" data-name="No Man's Sky" data-img="images/manky.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/xeno2.jpg" alt="Dragon Ball Xenoverse 2">
+  <p><b>Nombre:</b> Dragon Ball Xenoverse 2</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 31mil</p>
+  <label><input type="checkbox" value="31000" data-name="Dragon Ball Xenoverse 2" data-img="images/xeno2.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/agua.jpg" alt="Subnautica">
+  <p><b>Nombre:</b> Subnautica</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 38mil</p>
+  <label><input type="checkbox" value="38000" data-name="Subnautica" data-img="images/agua.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/tsuhimA.jpg" alt="Ghost of Tsushima">
+  <p><b>Nombre:</b> Ghost of Tsushima</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 20mil</p>
+  <label><input type="checkbox" value="20000" data-name="Ghost of Tsushima" data-img="images/tsuhimA.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/ofus2.jpg" alt="The Last of Us Part II">
+  <p><b>Nombre:</b> The Last of Us Part II</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 35mil</p>
+  <label><input type="checkbox" value="35000" data-name="The Last of Us Part II" data-img="images/ofus2.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/away.jpg" alt="A Way Out">
+  <p><b>Nombre:</b> A Way Out</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 18mil</p>
+  <label><input type="checkbox" value="18000" data-name="A Way Out" data-img="images/away.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/cyber.jpg" alt="Cyberpunk">
+  <p><b>Nombre:</b> Cyberpunk</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 24mil</p>
+  <label><input type="checkbox" value="24000" data-name="Cyberpunk" data-img="images/cyber.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/re7.jpg" alt="Resident Evil Biohazard">
+  <p><b>Nombre:</b> Resident Evil Biohazard</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 16mil</p>
+  <label><input type="checkbox" value="16000" data-name="Resident Evil Biohazard" data-img="images/re7.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/fc25.jpg" alt="FC25">
+  <p><b>Nombre:</b> FC25</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 38mil</p>
+  <label><input type="checkbox" value="38000" data-name="FC25" data-img="images/fc25.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/mine.jpg" alt="Minecraft">
+  <p><b>Nombre:</b> Minecraft</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 25mil</p>
+  <label><input type="checkbox" value="25000" data-name="Minecraft" data-img="images/mine.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/tr.jpg" alt="Tomb Raider Trilogy">
+  <p><b>Nombre:</b> Tomb Raider Trilogy</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 16mil</p>
+  <label><input type="checkbox" value="16000" data-name="Tomb Raider Trilogy" data-img="images/tr.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/light.jpg" alt="Dying Light">
+  <p><b>Nombre:</b> Dying Light</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 13mil</p>
+  <label><input type="checkbox" value="13000" data-name="Dying Light" data-img="images/light.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/ds.jpg" alt="Dark Souls Remastered">
+  <p><b>Nombre:</b> Dark Souls Remastered</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 46mil</p>
+  <label><input type="checkbox" value="46000" data-name="Dark Souls Remastered" data-img="images/ds.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/dg.jpg" alt="Days Gone">
+  <p><b>Nombre:</b> Days Gone</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 61mil</p>
+  <label><input type="checkbox" value="61000" data-name="Days Gone" data-img="images/dg.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/re456.jpg" alt="Pack RE4, RE5, RE6">
+  <p><b>Nombre:</b> Pack RE4, RE5, RE6</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 31mil</p>
+  <label><input type="checkbox" value="31000" data-name="Pack RE4, RE5, RE6" data-img="images/re456.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+  <img src="images/elden.jpg" alt="Elden Ring">
+  <p><b>Nombre:</b> Elden Ring</p>
+  <p><b>Consola:</b> PS4 / PS5</p>
+  <p><b>Precio:</b> 52mil</p>
+  <label><input type="checkbox" value="52000" data-name="Elden Ring" data-img="images/elden.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+<img src="images/island.jpg" alt="Dead Island 2">
+<p><b>Nombre:</b> Dead Island 2</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 24mil</p>
+<label><input type="checkbox" value="24000" data-name="Dead Island 2" data-img="images/island.jpg"> Seleccionar</label>
+</div>
+
+<div class="juego">
+<img src="images/liylr.jpg" alt="pack: little nightmares 1 & 2">
+<p><b>Nombre:</b> pack: little nightmares 1 & 2</p>
+<p><b>Consola:</b> PS4 / PS5</p>
+<p><b>Precio:</b> 32mil</p>
+<label><input type="checkbox" value="32000" data-name="pack: little nightmares 1 & 2" data-img="images/liylr.jpg"> Seleccionar</label>
+</div>
+<!-- Continuar agregando todos los demás juegos de tu lista con la misma estructura -->
+
+
+
+<div id="carrito">
+<p id="total">Total: 0</p>
+<div id="selected-juegos"></div>
+<button onclick="mostrarMensaje()">Comprar</button>
+</div>
+
+<div id="mensaje">
+<h2>💰 INSTRUCCIONES DE PAGO 💰</h2>
+<p><b>Total a pagar:</b> <span id="totalPago">0</span> pesos</p>
+<p><b>Alias:</b> juegosdigitalesps45</p>
+<p><b>CVU:</b> 0000003100079682982223</p>
+<p><b>Destino:</b> Nicolás Emiliano Pereyra dos Santos</p>
+<p>1️⃣ Realiza el pago al alias/CVU indicado.</p>
+<p>2️⃣ Envía el comprobante de pago a nuestras redes sociales:</p>
+<ul style="list-style:none;">
+<li>WhatsApp: <b>+54 11-2379-7528</b></li>
+<li>Instagram: <b>@juegosdigitalesps._</b></li>
+</ul>
+<p>Una vez confirmado el pago, recibirás tus juegos digitales 🎮</p>
+</div>
+
+<script>
+const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+const totalDisplay = document.getElementById("total");
+const selectedContainer = document.getElementById("selected-juegos");
+const mensaje = document.getElementById("mensaje");
+const totalPago = document.getElementById("totalPago");
+let total = 0;
+
+checkboxes.forEach(checkbox => {
+checkbox.addEventListener("change", () => {
+const value = parseInt(checkbox.value);
+const name = checkbox.dataset.name;
+const imgSrc = checkbox.dataset.img;
+
+if (checkbox.checked) {
+  total += value;
+  const img = document.createElement("img");
+  img.src = imgSrc;
+  img.alt = name;
+  img.id = "img-" + name.replace(/\s+/g, '');
+  selectedContainer.appendChild(img);
+} else {
+  total -= value;
+  const imgToRemove = document.getElementById("img-" + name.replace(/\s+/g, ''));
+  if (imgToRemove) selectedContainer.removeChild(imgToRemove);
+}
+
+totalDisplay.textContent = "Total: " + total.toLocaleString() + " pesos";
+});
+});
+
+function mostrarMensaje() {
+if (total === 0) {
+  alert("Selecciona al menos un juego para comprar.");
+  return;
+}
+totalPago.textContent = total.toLocaleString();
+mensaje.style.display = "block";
+mensaje.scrollIntoView({ behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>
