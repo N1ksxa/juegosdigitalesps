@@ -2,6 +2,56 @@
 <html lang="es">
 <head>
   <style>
+
+#notbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #007BFF;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  font-size: 18px;
+  z-index: 2000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+#tituloNotbar {
+  font-weight: bold;
+}
+
+#carritoNotbar {
+  position: relative;
+  margin-right: 30px; /* ahora está más hacia adentro, puedes aumentar o disminuir este valor */
+}
+
+#carritoNotbar button {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  background: orange;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+#contadorCarrito {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  display: none; /* oculto por defecto */
+}
   .catalogo label {
     display: flex;
     align-items: center;
@@ -33,6 +83,13 @@
 <title>Juegos Digitales PS</title>
 
 <style>
+  
+body {
+  padding-top: 80px; /* un poco más que la altura de la Hotbar */
+}
+#tituloPrincipal, .catalogo {
+  margin-top: 30px; /* suficiente para que la Hotbar no lo tape */
+}
 
 body {
   font-family: Arial, sans-serif;
@@ -47,7 +104,7 @@ body {
 .header-line { width: 100%; height: 8px; background-color: #00bcd4; }
 h1 {
   text-align: center;
-  margin: 20px 0 5px 0;
+  margin: 60px 0 5px 0;
   font-size: 40px;
   font-weight: bold;
   background: linear-gradient(270deg, blue, red, violet, green, blue);
@@ -167,8 +224,8 @@ button:hover { background: #007c91; }
 </head>
 <body>
   
+  
 <header style="text-align:center; margin-bottom:20px;">
-  <img src="images/logo.jpg" alt="Logo Tienda" style="max-width:150px; height:auto;">
 </header>
 <div class="header-line"></div>
 <h1>BIENVENIDO A JUEGOS DIGITALES PS</h1>
@@ -594,17 +651,17 @@ button:hover { background: #007c91; }
 <!-- Continuar agregando todos los demás juegos de tu lista con la misma estructura -->
 
 
-
-<!-- Apartado de total y botón Comprar -->
-<div id="carrito" style="margin-top:30px; border-top:2px solid #00bcd4; padding-top:20px; text-align:center;">
-  <p id="total">Total: 0 ARS</p>
-  <button id="btnComprar">Comprar</button>
-  <div style="position: relative; display: inline-block; margin-left: 10px;">
-    <button id="btnCarrito">🛒</button>
-    <span id="contadorCarrito" style="position: absolute; top: -10px; right: -10px; background-color: black; color: white; border-radius: 50%; padding: 4px 8px; font-size: 12px; font-weight: bold;">0</span>
+<div id="notbar">
+  <span id="tituloNotbar">Juegos Digitales PS🎮</span>
+  <div style="display:flex; align-items:center; gap:15px;">
+    <button id="btnComprarNotbar">Comprar</button>
+    <span id="totalNotbar" style="font-weight:bold; color:white;"></span> <!-- TOTAL -->
+    <div id="carritoNotbar" style="position:relative; display:inline-block;">
+      <button id="btnCarrito">🛒</button>
+      <span id="contadorCarrito"></span>
+    </div>
   </div>
 </div>
-
 <!-- Modal de carrito -->
 <div id="modalCarrito" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000;">
   <div class="contenido" style="background:white; padding:20px; border-radius:10px; width:90%; max-width:500px; max-height:80vh; overflow-y:auto; text-align:center;">
@@ -638,36 +695,40 @@ button:hover { background: #007c91; }
 
 <script>
 const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-const totalDisplay = document.getElementById("total");
+const carrito = [];
 const contadorCarrito = document.getElementById("contadorCarrito");
-const selectedJuegosDiv = document.getElementById("selected-juegos");
-const btnCarrito = document.getElementById("btnCarrito");
-const modalCarrito = document.getElementById("modalCarrito");
-const listaCarrito = document.getElementById("listaCarrito");
-const btnComprar = document.getElementById("btnComprar");
-const mensaje = document.getElementById("mensaje");
-const juegosPagoDiv = document.getElementById("juegosPago");
-const totalPago = document.getElementById("totalPago");
 
-let carrito = [];
+function actualizarContador() {
+  const cantidad = carrito.length;
 
-// Actualizar total, número y vista de juegos seleccionados
-function actualizarContadorYTotal() {
-  const total = carrito.reduce((sum, item) => sum + item.value, 0);
-  totalDisplay.textContent = "Total: " + total.toLocaleString() + " ARS";
-  contadorCarrito.textContent = carrito.length;
-
-  selectedJuegosDiv.innerHTML = "";
-  carrito.forEach(item => {
-    const img = document.createElement("img");
-    img.src = item.imgSrc;
-    img.alt = item.name;
-    img.style.width = "60px";
-    img.style.height = "auto";
-    img.style.margin = "3px";
-    selectedJuegosDiv.appendChild(img);
-  });
+  if(cantidad > 0){
+    contadorCarrito.style.display = "inline-block"; // mostrar contador
+    contadorCarrito.textContent = cantidad;         // mostrar número
+  } else {
+    contadorCarrito.style.display = "none";        // ocultar si no hay juegos
+    contadorCarrito.textContent = "";              // limpiar contenido
+  }
 }
+
+// Manejar selección/desmarcado
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener("change", () => {
+    const name = checkbox.dataset.name;
+    const value = parseInt(checkbox.value);
+    const imgSrc = checkbox.dataset.img;
+
+    if(checkbox.checked){
+      if(!carrito.find(item => item.name === name)){
+        carrito.push({name, value, imgSrc});
+      }
+    } else {
+      const index = carrito.findIndex(item => item.name === name);
+      if(index !== -1) carrito.splice(index, 1);
+    }
+
+    actualizarContador(); // 🔹 Actualizamos el contador al instante
+  });
+});
 
 // Manejar selección/desmarcado
 checkboxes.forEach(checkbox => {
@@ -736,16 +797,23 @@ function quitarDelCarrito(nombre){
   actualizarModalCarrito();
 }
 
-// Comprar: mostrar apartado de pago y juegos seleccionados
-btnComprar.addEventListener("click", () => {
+// === Definir elementos del DOM para el pago ===
+const btnComprarNotbar = document.getElementById("btnComprarNotbar");
+const juegosPagoDiv = document.getElementById("juegosPago");
+const mensaje = document.getElementById("mensaje");
+
+// === Evento para el botón de comprar en la NotBar ===
+btnComprarNotbar.addEventListener("click", () => {
   if(carrito.length === 0){
     alert("Selecciona al menos un juego para comprar.");
     return;
   }
 
+  // Calcular total
   const total = carrito.reduce((sum, item) => sum + item.value, 0);
-  totalPago.textContent = total.toLocaleString();
+  document.getElementById("totalPago").textContent = total.toLocaleString();
 
+  // Mostrar imágenes de los juegos seleccionados
   juegosPagoDiv.innerHTML = "";
   let imgSize;
   switch(carrito.length){
@@ -766,9 +834,50 @@ btnComprar.addEventListener("click", () => {
     juegosPagoDiv.appendChild(img);
   });
 
+  // Mostrar la sección de pago
   mensaje.style.display = "flex";
   mensaje.scrollIntoView({behavior:"smooth"});
 });
+
+function actualizarTotalNotbar() {
+  const total = carrito.reduce((sum, item) => sum + item.value, 0);
+  if(total > 0){
+    totalNotbar.textContent = "Total: " + total.toLocaleString() + " ARS";
+  } else {
+    totalNotbar.textContent = "Total:"; // Solo "Total:" si no hay juegos
+  }
+}
+
+// Llamar a actualizarTotalNotbar() cada vez que se agrega o quita un juego:
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener("change", () => {
+    const name = checkbox.dataset.name;
+    const value = parseInt(checkbox.value);
+    const imgSrc = checkbox.dataset.img;
+
+    if(checkbox.checked){
+      if(!carrito.find(item => item.name === name)){
+        carrito.push({name, value, imgSrc});
+      }
+    } else {
+      const index = carrito.findIndex(item => item.name === name);
+      if(index !== -1) carrito.splice(index, 1);
+    }
+
+    actualizarContador();      // contador del carrito
+    actualizarTotalNotbar();   // actualizar total en NotBar
+  });
+});
+
+// También cuando quitas del modal:
+function quitarDelCarrito(nombre){
+  carrito = carrito.filter(item => item.name !== nombre);
+  const checkbox = [...checkboxes].find(ch => ch.dataset.name === nombre);
+  if(checkbox) checkbox.checked = false;
+  actualizarContador();
+  actualizarTotalNotbar();  // actualizar total en NotBar
+  actualizarModalCarrito();
+}
 </script>
   
 </body>
