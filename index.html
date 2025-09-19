@@ -220,6 +220,33 @@ button:hover { background: #007c91; }
 }
 @keyframes float { 0% { transform: translateY(100vh) rotate(0deg); } 100% { transform: translateY(-100px) rotate(360deg); } }
 
+.redes-sociales {
+  position: fixed;
+  top: 70px; /* ajusta según la altura de tu hotbar */
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+
+.redes-sociales a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+}
+
+.redes-sociales a img {
+  width: 24px;
+  height: 24px;
+}
 </style>
 </head>
 <body>
@@ -662,6 +689,18 @@ button:hover { background: #007c91; }
     </div>
   </div>
 </div>
+
+<!-- Apartado de Redes Sociales -->
+<div class="redes-sociales">
+  <a href="https://wa.me/5491112345678" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="11-2379-7528">
+    11-2379-7528
+  </a>
+  <a href="https://www.instagram.com/Juegosdigitalesps._" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Juegosdigitalesps._">
+    Juegosdigitalesps._
+  </a>
+</div>
 <!-- Modal de carrito -->
 <div id="modalCarrito" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000;">
   <div class="contenido" style="background:white; padding:20px; border-radius:10px; width:90%; max-width:500px; max-height:80vh; overflow-y:auto; text-align:center;">
@@ -670,6 +709,8 @@ button:hover { background: #007c91; }
     <button onclick="cerrarCarrito()" style="margin-top:15px;">Cerrar</button>
   </div>
 </div>
+
+<div id="pagination"></div>
 
 <!-- Apartado de pago -->
 <div id="mensaje" style="display:none; flex-wrap:wrap; justify-content:center; gap:20px;">
@@ -844,7 +885,7 @@ function actualizarTotalNotbar() {
   if(total > 0){
     totalNotbar.textContent = "Total: " + total.toLocaleString() + " ARS";
   } else {
-    totalNotbar.textContent = "Total:"; // Solo "Total:" si no hay juegos
+    totalNotbar.textContent = ""; // Solo "Total:" si no hay juegos
   }
 }
 
@@ -878,8 +919,51 @@ function quitarDelCarrito(nombre){
   actualizarTotalNotbar();  // actualizar total en NotBar
   actualizarModalCarrito();
 }
+// PAGINACIÓN
+const juegos = document.querySelectorAll('.catalogo .juego');
+const juegosPorPagina = 16; // ahora son 16 juegos por página
+let paginaActual = 1;
+const totalPaginas = Math.ceil(juegos.length / juegosPorPagina);
+const paginationDiv = document.createElement('div');
+paginationDiv.id = "pagination";
+paginationDiv.style.textAlign = "center";
+paginationDiv.style.marginTop = "20px";
+document.querySelector('.catalogo').after(paginationDiv);
+
+function displayPage(page) {
+  paginaActual = page;
+  const inicio = (page - 1) * juegosPorPagina;
+  const fin = inicio + juegosPorPagina;
+
+  juegos.forEach((juego, index) => {
+    if(index >= inicio && index < fin){
+      juego.style.display = "block";
+    } else {
+      juego.style.display = "none";
+    }
+  });
+
+  setupPagination();
+}
+
+function setupPagination() {
+  paginationDiv.innerHTML = "";
+  for(let i = 1; i <= totalPaginas; i++){
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    btn.style.margin = "0 5px";
+    btn.style.padding = "5px 10px";
+    btn.style.cursor = "pointer";
+    if(i === paginaActual) btn.style.backgroundColor = "#007bff";
+    btn.style.color = i === paginaActual ? "#fff" : "#000";
+    btn.addEventListener('click', () => displayPage(i));
+    paginationDiv.appendChild(btn);
+  }
+}
+
+// Inicializar primera página
+displayPage(1);
 </script>
   
 </body>
 </html>
-
