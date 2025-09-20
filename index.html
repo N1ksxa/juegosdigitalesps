@@ -684,6 +684,62 @@ button:hover { background: #007c91; }
     Seleccionar
   </label>
 </div>
+
+<div class="juego">
+  <img src="images/gangbeasts.jpg" alt="S Gang Beasts">
+  <p><b>Nombre:</b> Gang Beasts</p>
+  <p><b>Consola:</b> PS4 | PS5</p>
+  <p><b>Precio:</b> 17mil</p>
+  <label>
+    <input type="checkbox" 
+           value="17000" 
+           data-name="Gang Beasts" 
+           data-img="images/gangbeasts.jpg">
+    Seleccionar
+  </label>
+</div>
+
+<div class="juego">
+  <img src="images/gta.jpg" alt="Grand Theft Auto">
+  <p><b>Nombre:</b> Grand Theft Auto</p>
+  <p><b>Consola:</b> PS4 | PS5</p>
+  <p><b>Precio:</b> 22mil</p>
+  <label>
+    <input type="checkbox" 
+           value="22000" 
+           data-name="Grand Theft Auto" 
+           data-img="images/gta.jpg">
+    Seleccionar
+  </label>
+</div>
+
+<div class="juego">
+  <img src="images/uncharted4.jpg" alt="Uncharted 4 + the lost legacy">
+  <p><b>Nombre:</b> Uncharted 4 + the lost legacy</p>
+  <p><b>Consola:</b> PS4 | PS5</p>
+  <p><b>Precio:</b> 14mil</p>
+  <label>
+    <input type="checkbox" 
+           value="14000" 
+           data-name="Uncharted 4 + the lost legacy" 
+           data-img="images/uncharted4.jpg">
+    Seleccionar
+  </label>
+</div>
+
+<div class="juego">
+  <img src="images/farcry6.jpg" alt="Farcry 6">
+  <p><b>Nombre:</b> Farcry 6</p>
+  <p><b>Consola:</b> PS4 | PS5</p>
+  <p><b>Precio:</b> 18mil</p>
+  <label>
+    <input type="checkbox" 
+           value="18000" 
+           data-name="Farcry 6" 
+           data-img="images/farcry6.jpg">
+    Seleccionar
+  </label>
+</div>
 <!-- Continuar agregando todos los demás juegos de tu lista con la misma estructura -->
 
 
@@ -752,6 +808,8 @@ button:hover { background: #007c91; }
     <p>Una vez confirmado el pago, recibirás tus juegos digitales 🎮</p>
   </div>
 </div>
+
+
 
 <script>
 const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -938,8 +996,57 @@ function quitarDelCarrito(nombre){
   actualizarTotalNotbar();  // actualizar total en NotBar
   actualizarModalCarrito();
 }
+// Función para quitar un juego del carrito
+function quitarDelCarrito(nombre) {
+  // Quitar el juego del array
+  const index = carrito.findIndex(item => item.name === nombre);
+  if (index !== -1) carrito.splice(index, 1);
 
+  // Desmarcar checkbox correspondiente
+  const checkbox = [...checkboxes].find(ch => ch.dataset.name === nombre);
+  if (checkbox) checkbox.checked = false;
+
+  // Actualizar contador de la Hotbar
+  actualizarContador();
+
+  // Actualizar total de la Hotbar
+  actualizarTotalNotbar();
+
+  // Actualizar modal del carrito si está abierto
+  if (modalCarrito.style.display === "flex") {
+    actualizarModalCarrito();
+  }
+
+  // Actualizar sección de pago si está visible
+  if (mensaje.style.display === "flex") {
+    // Total a pagar
+    const total = carrito.reduce((sum, item) => sum + item.value, 0);
+    document.getElementById("totalPago").textContent = total.toLocaleString();
+
+    // Actualizar imágenes
+    juegosPagoDiv.innerHTML = "";
+    let imgSize;
+    switch(carrito.length){
+      case 1: imgSize = 250; break;
+      case 2: imgSize = 180; break;
+      case 3: imgSize = 140; break;
+      case 4: imgSize = 120; break;
+      default: imgSize = 100;
+    }
+    carrito.forEach(item => {
+      const img = document.createElement("img");
+      img.src = item.imgSrc;
+      img.alt = item.name;
+      img.style.width = imgSize + "px";
+      img.style.height = "auto";
+      img.style.borderRadius = "8px";
+      juegosPagoDiv.appendChild(img);
+    });
+  }
+}
+ 
 </script>
   
 </body>
 </html>
+ 
