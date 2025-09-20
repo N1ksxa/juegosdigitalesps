@@ -2,6 +2,13 @@
 <html lang="es">
 <head>
   <style>
+    .titulo {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: rgb(0, 51, 153); /* 👈 mismo color que la NotBar */
+}
 
 #notbar {
   position: fixed;
@@ -107,14 +114,8 @@ h1 {
   margin: 60px 0 5px 0;
   font-size: 40px;
   font-weight: bold;
-  background: linear-gradient(270deg, blue, red, violet, green, blue);
-  background-size: 800% 800%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: neonColors 8s ease infinite;
-  text-shadow: 0 0 10px rgba(255,255,255,0.8),
-               0 0 20px rgba(255,255,255,0.6),
-               0 0 30px rgba(255,255,255,0.4);
+  color: #66B2FF; /* azul claro */
+  text-shadow: 0 0 5px rgba(0,0,0,0.2); /* opcional para resaltar */
 }
 
 @keyframes neonColors {
@@ -264,7 +265,7 @@ button:hover { background: #007c91; }
 <header style="text-align:center; margin-bottom:20px;">
 </header>
 <div class="header-line"></div>
-<h2>CATÁLOGO:</h2>
+<h1>CATÁLOGO:</h1>
 
 <div class="symbols">
   <span style="left:10%;">△</span>
@@ -942,4 +943,3 @@ function quitarDelCarrito(nombre){
   
 </body>
 </html>
-
