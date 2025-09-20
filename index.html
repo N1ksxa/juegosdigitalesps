@@ -247,6 +247,15 @@ button:hover { background: #007c91; }
   width: 24px;
   height: 24px;
 }
+
+@media (max-width: 768px) {
+  .redes-sociales {
+    position: relative;   /* deja de ser fijo */
+    margin: 20px 0;       /* separación arriba/abajo */
+    left: 0;              /* se pega a la izquierda */
+    text-align: left;     /* alinear a la izquierda */
+  }
+}
 </style>
 </head>
 <body>
@@ -710,7 +719,17 @@ button:hover { background: #007c91; }
   </div>
 </div>
 
-<div id="pagination"></div>
+<!-- Apartado de Redes Sociales -->
+<div class="redes-sociales">
+  <a href="https://wa.me/5491112345678" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="11-2379-7528">
+    11-2379-7528
+  </a>
+  <a href="https://www.instagram.com/Juegosdigitalesps._" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Juegosdigitalesps._">
+    Juegosdigitalesps._
+  </a>
+</div>
 
 <!-- Apartado de pago -->
 <div id="mensaje" style="display:none; flex-wrap:wrap; justify-content:center; gap:20px;">
@@ -919,50 +938,7 @@ function quitarDelCarrito(nombre){
   actualizarTotalNotbar();  // actualizar total en NotBar
   actualizarModalCarrito();
 }
-// PAGINACIÓN
-const juegos = document.querySelectorAll('.catalogo .juego');
-const juegosPorPagina = 16; // ahora son 16 juegos por página
-let paginaActual = 1;
-const totalPaginas = Math.ceil(juegos.length / juegosPorPagina);
-const paginationDiv = document.createElement('div');
-paginationDiv.id = "pagination";
-paginationDiv.style.textAlign = "center";
-paginationDiv.style.marginTop = "20px";
-document.querySelector('.catalogo').after(paginationDiv);
 
-function displayPage(page) {
-  paginaActual = page;
-  const inicio = (page - 1) * juegosPorPagina;
-  const fin = inicio + juegosPorPagina;
-
-  juegos.forEach((juego, index) => {
-    if(index >= inicio && index < fin){
-      juego.style.display = "block";
-    } else {
-      juego.style.display = "none";
-    }
-  });
-
-  setupPagination();
-}
-
-function setupPagination() {
-  paginationDiv.innerHTML = "";
-  for(let i = 1; i <= totalPaginas; i++){
-    const btn = document.createElement('button');
-    btn.textContent = i;
-    btn.style.margin = "0 5px";
-    btn.style.padding = "5px 10px";
-    btn.style.cursor = "pointer";
-    if(i === paginaActual) btn.style.backgroundColor = "#007bff";
-    btn.style.color = i === paginaActual ? "#fff" : "#000";
-    btn.addEventListener('click', () => displayPage(i));
-    paginationDiv.appendChild(btn);
-  }
-}
-
-// Inicializar primera página
-displayPage(1);
 </script>
   
 </body>
